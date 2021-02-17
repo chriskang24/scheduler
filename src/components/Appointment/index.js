@@ -7,16 +7,18 @@ import Show from "./Show";
 import Empty from "./Empty";
 
 export default function Appointment(props) {
+
+ const toDisplay = props.interview ?
+    <Show
+      student={props.interview.student}
+      interviewer={props.interview.interviewer}
+    /> :
+    <Empty />
+  
   return (
     <article className="appointment">
       <Header time={props.time}></Header>
-      {props.interview ?
-        <Show
-          student={props.interview.student}
-          interviewer={props.interview.interviewer}
-        /> :
-        <Empty />
-      }
+      { toDisplay }
     </article>
   )
 }
