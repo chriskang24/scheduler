@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "components/Application.scss";
 import "components/Appointment";
@@ -6,25 +6,7 @@ import "components/Appointment";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
 
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-
+const axios = require('axios');
 
 const appointments = [
   {
@@ -83,13 +65,23 @@ const appointments = [
 
 
 export default function Application(props) {
-   const [day, setDay] = useState("Monday");
+  
+  const [day, setDay] = useState("Monday");
 
-   const parsedAppointments = appointments.map(appointment => 
+  const parsedAppointments = appointments.map(appointment =>
     <Appointment
       key={appointment.id}
-      {...appointment } />
-      )
+      {...appointment} />
+  )
+
+  const [days, setDays] = useState([]);
+  // Create an effect to make a GET request to /api/days using axios and update the days state with the response.
+  useEffect(() => {
+    axios.get('/api/days').then(response => {
+      console.log(response.data);
+      setDays([...response.data])
+    })  
+  }, [])
 
   return (
     <main className="layout">
@@ -102,9 +94,9 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-          days={days}
-          day={day}
-          setDay={setDay}
+            days={days}
+            day={day}
+            setDay={setDay}
           />
         </nav>
         <img
