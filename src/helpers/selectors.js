@@ -1,5 +1,5 @@
 
-export default function getAppointmentsForDay(state, day) {
+export function getAppointmentsForDay(state, day) {
 
   const dailyAppointments = [];
 
@@ -17,7 +17,26 @@ export default function getAppointmentsForDay(state, day) {
 };
 
 
-// export function getAppointmentsForDay(state, day) {
-//   const filteredDay = state.days.find((currentDay) => currentDay.name === day);
-//   return  filteredDay ? filteredDay.appointments.map((id) => state.appointments[id]) : [];
-// }
+export function getInterview(state, interview) {
+
+  if (interview === null) {
+    return null;
+  }
+
+  const result = { ...interview };
+  // console.log(result);
+
+  let interviewerInfo = Object.values(state.interviewers)
+  // console.log(interviewerInfo)
+
+  interviewerInfo.forEach(element => {
+    // console.log(element)
+    if (interview.interviewer === element.id) {
+      result.interviewer = element;
+    }
+  })
+  // console.log(result);
+  return result;
+
+};
+
