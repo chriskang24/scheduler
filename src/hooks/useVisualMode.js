@@ -24,5 +24,3 @@ export default function useVisualMode(initial) {
 
   return { mode: history[0], transition, back };
 }
-
-
