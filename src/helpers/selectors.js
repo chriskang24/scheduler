@@ -1,5 +1,5 @@
 
-export function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
 
   const dailyAppointments = [];
 
@@ -15,3 +15,9 @@ export function getAppointmentsForDay(state, day) {
 
   return dailyAppointments;
 };
+
+
+// export function getAppointmentsForDay(state, day) {
+//   const filteredDay = state.days.find((currentDay) => currentDay.name === day);
+//   return  filteredDay ? filteredDay.appointments.map((id) => state.appointments[id]) : [];
+// }

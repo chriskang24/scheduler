@@ -5,6 +5,7 @@ import "components/Appointment";
 
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
+import getAppointmentsForDay from "helpers/selectors";
 
 const axios = require('axios');
 
@@ -17,8 +18,8 @@ export default function Application(props) {
   })
 
   const setDay = day => setState({...state, day});
-  const setDays = days => setState(prev => ({...prev, days}));
-  const dailyAppointments = [];
+  // const setDays = days => setState(prev => ({...prev, days}));
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const parsedAppointments = dailyAppointments.map(appointment =>
     <Appointment
@@ -27,11 +28,21 @@ export default function Application(props) {
   )
 
   // Create an effect to make a GET request to /api/days using axios and update the days state with the response.
+  // setDays([...response.data])
+
   useEffect(() => {
-    axios.get('/api/days').then(response => {
-      // console.log(response.data);
-      setDays([...response.data])
-    })  
+
+    Promise.all([ 
+      axios.get('/api/days'), 
+      axios.get('/api/appointments')
+    ]).then(responses => {
+      // console.log(responses[0].data)
+      // console.log(responses[1].data)
+
+      setState(prev => 
+        ({...prev, days: responses[0].data, appointments: responses[1].data}))
+
+    })
   }, [])
 
   return (
