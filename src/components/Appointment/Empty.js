@@ -1,4 +1,3 @@
-import { decorateAction } from "@storybook/addon-actions/dist/preview";
 import React from "react";
 
 export default function Empty(props) {
