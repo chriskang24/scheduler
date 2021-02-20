@@ -5,7 +5,8 @@ import "components/Appointment";
 
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay} from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+
 
 const axios = require('axios');
 
@@ -24,6 +25,51 @@ export default function Application(props) {
   const interviewers = getInterviewersForDay(state, state.day);
   // console.log(interviewers);
 
+  function bookInterview(id, interview) {
+    // console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    // console.log(appointment);
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+
+    };
+    // console.log(appointments)
+    setState({ ...state, appointments });
+
+    return axios.put(`/api/appointments/${appointment.id}`, { interview })
+    
+  }
+
+  function cancelInterview(id) {
+    // console.log(id, interview);
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    // console.log(appointment);
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+
+    // console.log(appointments);
+
+    const url = `/api/appointments/${id}`;
+
+    return axios.delete(url)
+    .then(() => {
+      setState({ ...state, appointments });
+    })
+  }
+ 
+
   const schedule = appointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
 
@@ -34,11 +80,12 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+
       />
     );
   });
-  // Create an effect to make a GET request to /api/days using axios and update the days state with the response.
-  // setDays([...response.data])
 
   useEffect(() => {
 
@@ -47,8 +94,6 @@ export default function Application(props) {
       axios.get('/api/appointments'),
       axios.get('api/interviewers')
     ]).then(responses => {
-      // console.log(responses[0].data)
-      // console.log(responses[1].data)
 
       setState(prev =>
       ({
