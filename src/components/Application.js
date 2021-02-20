@@ -8,6 +8,7 @@ import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 
+
 const axios = require('axios');
 
 export default function Application(props) {
@@ -40,8 +41,6 @@ export default function Application(props) {
     };
     // console.log(appointments)
     setState({ ...state, appointments });
-
-    return axios.put(`/api/appointments/${appointment.id}`, { interview })
     
   }
 
@@ -61,12 +60,8 @@ export default function Application(props) {
 
     // console.log(appointments);
 
-    const url = `/api/appointments/${id}`;
-
-    return axios.delete(url)
-    .then(() => {
+   
       setState({ ...state, appointments });
-    })
   }
  
 

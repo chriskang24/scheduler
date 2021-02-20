@@ -11,7 +11,7 @@ import Status from "./Status";
 import Error from "./Error";
 import Form from "./Form";
 
-
+const axios = require('axios');
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -37,9 +37,10 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING)
-    const appointmentId = props.id
-    props.bookInterview(appointmentId, interview)
+    axios.put(`/api/appointments/${props.id}`, { interview })
+    
       .then(() => {
+        props.bookInterview(props.id, interview)
         transition(SHOW)
       })
       .catch(error => transition(ERROR_SAVE, true));
@@ -48,8 +49,11 @@ export default function Appointment(props) {
   function cancelAppointment() {
 
     transition(DELETING, true)
-    props.cancelInterview(props.id)
+
+    const url = `/api/appointments/${props.id}`;
+    axios.delete(url)
       .then(() => {
+        props.cancelInterview(props.id)
         transition(EMPTY)
       })
       .catch(error => transition(ERROR_DELETE, true));
