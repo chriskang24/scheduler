@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const axios = require('axios'); 
+const axios = require('axios');
 
 export default function useApplicationData() {
 
@@ -13,6 +13,19 @@ export default function useApplicationData() {
 
   const setDay = day => setState({ ...state, day });
 
+  const findDays = function (id, appointments) {
+    const newDays = state.days.map(day => {
+      if (day.appointments.includes(id)) {
+        return {...day, spots: day.appointments.filter
+          (appointmentId => {return (appointments[appointmentId].interview === null)}).length
+        }
+      } else {
+        return day;
+      }
+    })
+
+    return newDays;
+  }
 
   useEffect(() => {
 
@@ -49,11 +62,13 @@ export default function useApplicationData() {
     };
     // console.log(appointments)
 
+    const days = findDays(id, appointments);
+
     return axios.put(`/api/appointments/${id}`, { interview })
-    .then(() => {
-      setState({ ...state, appointments });
-    })
-    
+      .then(() => {
+        setState(state => ({ ...state, days, appointments }));
+      })
+
   }
 
   function cancelInterview(id) {
@@ -72,12 +87,14 @@ export default function useApplicationData() {
 
     // console.log(appointments);
 
+    const days = findDays(id, appointments);
+
     const url = `/api/appointments/${id}`;
 
     return axios.delete(url)
-    .then(() => {
-      setState({ ...state, appointments });
-    })
+      .then(() => {
+        setState(state => ({ ...state, days, appointments }));
+      })
   }
 
   return {
@@ -86,5 +103,5 @@ export default function useApplicationData() {
     bookInterview,
     cancelInterview
   }
- 
+
 }
