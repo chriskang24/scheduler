@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const axios = require('axios');
+import axios from 'axios'
 
 export default function useApplicationData() {
 
@@ -30,7 +30,7 @@ export default function useApplicationData() {
     Promise.all([
       axios.get('/api/days'),
       axios.get('/api/appointments'),
-      axios.get('api/interviewers')
+      axios.get('/api/interviewers')
     ]).then(responses => {
 
       setState(prev =>

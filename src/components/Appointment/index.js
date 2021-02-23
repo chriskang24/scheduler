@@ -58,7 +58,10 @@ export default function Appointment(props) {
   }
 
   return (
-    <article className="appointment">
+    <article 
+    className="appointment"
+    data-testid="appointment"
+    >
       <Header time={props.time}></Header>
       {mode === EMPTY &&
         <Empty
@@ -81,7 +84,7 @@ export default function Appointment(props) {
       )}
       {mode === SAVING && (
         <Status
-          message="Saving..."
+          message="Saving"
         />
       )}
       {mode === ERROR && (
@@ -99,7 +102,7 @@ export default function Appointment(props) {
       )}
       {mode === DELETING && (
         <Status
-          message="Deleting..."
+          message="Deleting"
         />
       )}
       {mode === EDITING && (
