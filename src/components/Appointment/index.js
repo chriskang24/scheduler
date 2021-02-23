@@ -87,12 +87,6 @@ export default function Appointment(props) {
           message="Saving"
         />
       )}
-      {mode === ERROR && (
-        <Error
-          message="Could not delete appointment."
-          onClose={back}
-        />
-      )}
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
