@@ -16,9 +16,7 @@ export default function useApplicationData() {
   const findDays = function (id, appointments) {
     const newDays = state.days.map(day => {
       if (day.appointments.includes(id)) {
-        return {...day, spots: day.appointments.filter
-          (appointmentId => {return (appointments[appointmentId].interview === null)}).length
-        }
+        return {...day, spots: day.appointments.filter(appointmentId => {return (appointments[appointmentId].interview === null)}).length}
       } else {
         return day;
       }
