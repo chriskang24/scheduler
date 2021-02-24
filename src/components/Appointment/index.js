@@ -11,12 +11,9 @@ import Status from "./Status";
 import Error from "./Error";
 import Form from "./Form";
 
-
-
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CONFIRM = "CONFIRM";
-const ERROR = "ERROR";
 const CREATE = "CREATE";
 const DELETING = 'DELETING';
 const SAVING = 'SAVING';
